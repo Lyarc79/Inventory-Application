@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <aside class="sidebar">
+            <h3>Genres</h3>
+            <ul>
+                <% genresList.forEach(genre => { %>
+                    <li>
+                        <a href="/genres/<%= genre.id %>"><%= genre.name %></a>
+                    </li>
+                <% }) %>
+            </ul>
+            <h3>Platforms</h3>
+            <ul>
+                <% platformsList.forEach(platform => { %>
+                    <li>
+                        <a href="/platforms/<%= platform.id %>"><%= platform.name %></a>
+                    </li>
+                <% }) %>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <h1><%= title %></h1>
+            <div class="games-grid">
+                <% gamesList.forEach(game => { %>
+                    <div class="game-card">
+                        <h2><%= game.title %></h2>
+                        <p class="price"><%= game.price %></p>
+                        <p><strong>Developer:</strong><%= game.developer_name %></p>
+                        <p><strong>Publisher:</strong><%= game.publisher_name %></p>
+                        <div class="genres">
+                            <strong>Genres:</strong>
+                            <% game.genres.forEach(genre => { %>
+                                <span class="genre-badge"><%= genre %></span>
+                            <% }) %>
+                        </div>
+                        <div class="platforms">
+                            <strong>Platforms:</strong>
+                            <% game.platforms.forEach(platform => { %>
+                                <span class="platform-badge"><%= platform %></span>
+                            <% }) %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </main>
+    </body>
+</html>
