@@ -38,8 +38,50 @@ async function getGamesByPlatformList(req, res) {
   });
 }
 
+async function getCreateGameForm(req, res) {
+  const genres = await db.getAllGenres();
+  const platforms = await db.getAllPlatforms();
+  res.render("addGame", {
+    title: "Add New Game",
+    genresList: genres,
+    platformsList: platforms,
+  });
+}
+
+async function postCreateGameForm(req, res) {
+  const {
+    title,
+    developer,
+    publisher,
+    date,
+    price,
+    coverImg,
+    genres,
+    platforms,
+  } = req.body;
+  const genreIds = Array.isArray(genres) ? genres : genres ? [genres] : [];
+  const platformIds = Array.isArray(platforms)
+    ? platforms
+    : platforms
+      ? [platforms]
+      : [];
+  await db.insertGame(
+    title,
+    price,
+    date,
+    developer,
+    publisher,
+    coverImg,
+    genreIds,
+    platformIds,
+  );
+  res.redirect("/");
+}
+
 module.exports = {
   getGames,
   getGamesByGenreList,
   getGamesByPlatformList,
+  getCreateGameForm,
+  postCreateGameForm,
 };
