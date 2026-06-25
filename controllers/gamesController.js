@@ -22,6 +22,7 @@ async function getGamesByGenreList(req, res) {
     gamesList: games,
     genresList: genres,
     platformsList: platforms,
+    isFiltered: true,
   });
 }
 
@@ -35,6 +36,7 @@ async function getGamesByPlatformList(req, res) {
     gamesList: games,
     genresList: genres,
     platformsList: platforms,
+    isFiltered: true,
   });
 }
 
