@@ -1,0 +1,33 @@
+<html>
+  <head></head>
+  <body>
+    <h1><%= title %></h1>
+    <form action="/new" method="POST">
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title" required/>
+      <label for="developer">Developer:</label>
+      <input type="text" name="developer" id="developer" required/>
+      <label for="publisher">Publisher:</label>
+      <input type="text" name="publisher" id="publisher" required/>
+      <label for="date">Release Date:</label>
+      <input type="date" name="date" id="date" required/>
+      <label for="price">Price:</label>
+      <input type="text" name="price" id="price" required/>
+      <label for="coverImg">Cover Image URL</label>
+      <input type="text" name="coverImg" id="coverImg" />
+        <fieldset>
+            <legend>Genres</legend>
+            <% genresList.forEach(genre => { %>
+                <label><%= genre.name %><input type="checkbox" name="genres" value="<%= genre.id %>" required/></label>
+            <% }) %>
+        </fieldset>
+        <fieldset>
+            <legend>Platforms</legend>
+            <% platformsList.forEach(platform => { %>
+                <label><%= platform.name %><input type="checkbox" name="platforms" value="<%= platform.id %>" required/></label>
+            <% }) %>
+        </fieldset>
+        <button type="submit">Add Game</button>
+    </form>
+  </body>
+</html>
