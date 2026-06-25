@@ -83,10 +83,50 @@ async function getAllPlatforms() {
   return rows;
 }
 
+async function insertGame(
+  title,
+  price,
+  date,
+  devName,
+  pubName,
+  coverImg,
+  genreIds,
+  platformIds,
+) {
+  const devResult = await pool.query(
+    `INSERT INTO developers (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id`,
+    [devName],
+  );
+  const devId = devResult.rows[0].id;
+  const pubResult = await pool.query(
+    `INSERT INTO publishers (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id`,
+    [pubName],
+  );
+  const pubId = pubResult.rows[0].id;
+  const gameResult = await pool.query(
+    `INSERT INTO games (title, price, release_date, developer_id, publisher_id, cover_image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
+    [title, price, date, devId, pubId, coverImg],
+  );
+  const gameId = gameResult.rows[0].id;
+  for (const genreId of genreIds) {
+    await pool.query(
+      `INSERT INTO game_genres (game_id, genre_id) VALUES($1, $2)`,
+      [gameId, genreId],
+    );
+  }
+  for (const platformId of platformIds) {
+    await pool.query(
+      `INSERT INTO game_platforms (game_id, platform_id) VALUES($1, $2)`,
+      [gameId, platformId],
+    );
+  }
+}
+
 module.exports = {
   getAllGames,
   getGamesByGenre,
   getGamesByPlatform,
   getAllGenres,
   getAllPlatforms,
+  insertGame,
 };
