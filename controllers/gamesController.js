@@ -1,9 +1,11 @@
 const db = require("../db/queries");
 
 async function getGames(req, res) {
-  const games = await db.getAllGames();
-  const genres = await db.getAllGenres();
-  const platforms = await db.getAllPlatforms();
+  const [games, genres, platforms] = await Promise.all([
+    db.getAllGames(),
+    db.getAllGenres(),
+    db.getAllPlatforms(),
+  ]);
   res.render("index", {
     title: "Video Game Inventory",
     gamesList: games,
@@ -14,9 +16,11 @@ async function getGames(req, res) {
 
 async function getGamesByGenreList(req, res) {
   const genreId = req.params.genreId;
-  const games = await db.getGamesByGenre(genreId);
-  const genres = await db.getAllGenres();
-  const platforms = await db.getAllPlatforms();
+  const [games, genres, platforms] = await Promise.all([
+    db.getGamesByGenre(genreId),
+    db.getAllGenres(),
+    db.getAllPlatforms(),
+  ]);
   res.render("index", {
     title: "Filtered Games",
     gamesList: games,
@@ -28,9 +32,11 @@ async function getGamesByGenreList(req, res) {
 
 async function getGamesByPlatformList(req, res) {
   const platformId = req.params.platformId;
-  const games = await db.getGamesByPlatform(platformId);
-  const genres = await db.getAllGenres();
-  const platforms = await db.getAllPlatforms();
+  const [games, genres, platforms] = await Promise.all([
+    db.getGamesByPlatform(platformId),
+    db.getAllGenres(),
+    db.getAllPlatforms(),
+  ]);
   res.render("index", {
     title: "Filtered Games",
     gamesList: games,
@@ -41,8 +47,10 @@ async function getGamesByPlatformList(req, res) {
 }
 
 async function getCreateGameForm(req, res) {
-  const genres = await db.getAllGenres();
-  const platforms = await db.getAllPlatforms();
+  const [genres, platforms] = await Promise.all([
+    db.getAllGenres(),
+    db.getAllPlatforms(),
+  ]);
   res.render("addGame", {
     title: "Add New Game",
     genresList: genres,
@@ -88,6 +96,53 @@ async function getGameDetails(req, res) {
   });
 }
 
+async function getEditGameForm(req, res) {
+  const gameId = req.params.id;
+  const [game, genres, platforms] = await Promise.all([
+    db.showGameDetails(gameId),
+    db.getAllGenres(),
+    db.getAllPlatforms(),
+  ]);
+  res.render("editGame", {
+    title: "Edit Game",
+    game: game,
+    genresList: genres,
+    platformsList: platforms,
+  });
+}
+
+async function postEditGameForm(req, res) {
+  const gameId = req.params.id;
+  const {
+    title,
+    developer,
+    publisher,
+    date,
+    price,
+    coverImg,
+    genres,
+    platforms,
+  } = req.body;
+  const genreIds = Array.isArray(genres) ? genres : genres ? [genres] : [];
+  const platformIds = Array.isArray(platforms)
+    ? platforms
+    : platforms
+      ? [platforms]
+      : [];
+  await db.updateGameDetails(
+    gameId,
+    title,
+    price,
+    date,
+    developer,
+    publisher,
+    coverImg,
+    genreIds,
+    platformIds,
+  );
+  res.redirect(`/games/${gameId}`);
+}
+
 module.exports = {
   getGames,
   getGamesByGenreList,
@@ -95,4 +150,6 @@ module.exports = {
   getCreateGameForm,
   postCreateGameForm,
   getGameDetails,
+  getEditGameForm,
+  postEditGameForm,
 };

@@ -11,5 +11,7 @@ gamesRouter.get(
   gamesController.getGamesByPlatformList,
 );
 gamesRouter.get("/games/:id", gamesController.getGameDetails);
+gamesRouter.get("/games/:id/edit", gamesController.getEditGameForm);
+gamesRouter.post("/games/:id/edit", gamesController.postEditGameForm);
 
 module.exports = gamesRouter;
