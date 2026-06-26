@@ -26,21 +26,13 @@
             <div class="games-grid">
                 <% gamesList.forEach(game => { %>
                     <div class="game-card">
-                        <h2><%= game.title %></h2>
-                        <p class="price"><%= game.price %></p>
-                        <p><strong>Developer:</strong><%= game.developer_name %></p>
-                        <p><strong>Publisher:</strong><%= game.publisher_name %></p>
-                        <div class="genres">
-                            <strong>Genres:</strong>
-                            <% game.genres.forEach(genre => { %>
-                                <span class="genre-badge"><%= genre %></span>
-                            <% }) %>
+                        <div class="card-image">
+                            <img src="<%= game.cover_image_url || '/images/placeholder.png' %>" alt="<%= game.title %> Cover">
                         </div>
-                        <div class="platforms">
-                            <strong>Platforms:</strong>
-                            <% game.platforms.forEach(platform => { %>
-                                <span class="platform-badge"><%= platform %></span>
-                            <% }) %>
+                        <div class="card-content">
+                            <h3>
+                                <a href="/games/<%= game.id %>"><%= game.title %></a>
+                            </h3>
                         </div>
                     </div>
                 <% }) %>

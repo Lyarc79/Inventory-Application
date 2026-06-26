@@ -1,0 +1,50 @@
+<html>
+  <head></head>
+  <body>
+    <a href="/">Back to Home</a>
+    <main class="main-content">
+      <div class="left-column">
+        <img src="<%= game.cover_image_url %>" alt="<%= game.title %>" />
+      </div>
+      <div class="right-column">
+        <h1 class="game-title"><%= game.title %></h1>
+        <div class="game-details">
+          <div class="detail-item">
+            <span class="label">Price:</span>
+            <span class="price"><%= game.price %></span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Release Date:</span>
+            <span class="release-date"><%= game.release_date %></span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Developer:</span>
+            <span class="developer"><%= game.developer_name %></span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Publisher:</span>
+            <span class="publisher"><%= game.publisher_name %></span>
+          </div>
+        </div>
+        <div class="game-tags">
+            <div class="genres">
+                <strong>Genres:</strong>
+                <% game.genres.forEach(genre => { %>
+                    <span class="genre-badge"><%= genre %></span>
+                <% }) %>
+            </div>
+            <div class="platforms">
+                <strong>Platforms:</strong>
+                <% game.platforms.forEach(platform => { %>
+                    <span class="platform-badge"><%= platform %></span>
+                <% }) %>
+            </div>
+        </div>
+        <div class="actions">
+            <a href="/games/<%= game.id %>/edit" class="edit-btn">Edit Game</a>
+            <a href="/games/<%= game.id %>/delete" class="delete-btn">Delete Game</a>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
