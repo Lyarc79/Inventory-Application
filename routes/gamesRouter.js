@@ -10,5 +10,6 @@ gamesRouter.get(
   "/platforms/:platformId",
   gamesController.getGamesByPlatformList,
 );
+gamesRouter.get("/games/:id", gamesController.getGameDetails);
 
 module.exports = gamesRouter;

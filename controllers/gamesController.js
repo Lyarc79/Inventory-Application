@@ -80,10 +80,19 @@ async function postCreateGameForm(req, res) {
   res.redirect("/");
 }
 
+async function getGameDetails(req, res) {
+  const gameId = req.params.id;
+  const game = await db.showGameDetails(gameId);
+  res.render("gameDetails", {
+    game: game,
+  });
+}
+
 module.exports = {
   getGames,
   getGamesByGenreList,
   getGamesByPlatformList,
   getCreateGameForm,
   postCreateGameForm,
+  getGameDetails,
 };
