@@ -1,48 +1,13 @@
 const pool = require("./pool");
 
 async function getAllGames() {
-  const { rows } = await pool.query(
-    `SELECT
-        games.id,
-        games.title,
-        games.price,
-        developers.name AS developer_name,
-        publishers.name AS publisher_name,
-        ARRAY_AGG(DISTINCT genres.name) AS genres,
-        ARRAY_AGG(DISTINCT platforms.name) AS platforms
-    FROM games 
-    INNER JOIN developers ON games.developer_id = developers.id
-    INNER JOIN publishers ON games.publisher_id = publishers.id
-    INNER JOIN game_genres ON games.id = game_genres.game_id
-    INNER JOIN genres ON game_genres.genre_id = genres.id
-    INNER JOIN game_platforms ON games.id = game_platforms.game_id
-    INNER JOIN platforms ON game_platforms.platform_id = platforms.id
-    GROUP BY games.id, developers.name, publishers.name
-    `,
-  );
+  const { rows } = await pool.query(`SELECT * FROM game_detailed_view;`);
   return rows;
 }
 
 async function getGamesByGenre(genreId) {
   const { rows } = await pool.query(
-    `SELECT
-        games.id,
-        games.title,
-        games.price,
-        developers.name AS developer_name,
-        publishers.name AS publisher_name,
-        ARRAY_AGG(DISTINCT genres.name) AS genres,
-        ARRAY_AGG(DISTINCT platforms.name) AS platforms
-    FROM games 
-    INNER JOIN developers ON games.developer_id = developers.id
-    INNER JOIN publishers ON games.publisher_id = publishers.id
-    INNER JOIN game_genres ON games.id = game_genres.game_id
-    INNER JOIN genres ON game_genres.genre_id = genres.id
-    INNER JOIN game_platforms ON games.id = game_platforms.game_id
-    INNER JOIN platforms ON game_platforms.platform_id = platforms.id
-    WHERE genres.id = $1
-    GROUP BY games.id, developers.name, publishers.name
-    `,
+    `SELECT * FROM game_detailed_view WHERE id IN (SELECT game_id FROM game_genres WHERE genre_id = $1)`,
     [genreId],
   );
   return rows;
@@ -50,24 +15,7 @@ async function getGamesByGenre(genreId) {
 
 async function getGamesByPlatform(platformId) {
   const { rows } = await pool.query(
-    `SELECT
-        games.id,
-        games.title,
-        games.price,
-        developers.name AS developer_name,
-        publishers.name AS publisher_name,
-        ARRAY_AGG(DISTINCT genres.name) AS genres,
-        ARRAY_AGG(DISTINCT platforms.name) AS platforms
-    FROM games 
-    INNER JOIN developers ON games.developer_id = developers.id
-    INNER JOIN publishers ON games.publisher_id = publishers.id
-    INNER JOIN game_genres ON games.id = game_genres.game_id
-    INNER JOIN genres ON game_genres.genre_id = genres.id
-    INNER JOIN game_platforms ON games.id = game_platforms.game_id
-    INNER JOIN platforms ON game_platforms.platform_id = platforms.id
-    WHERE platforms.id = $1
-    GROUP BY games.id, developers.name, publishers.name
-    `,
+    `SELECT * FROM game_detailed_view WHERE id IN (SELECT game_id FROM game_platforms WHERE platform_id = $1);`,
     [platformId],
   );
   return rows;
@@ -122,6 +70,14 @@ async function insertGame(
   }
 }
 
+async function showGameDetails(gameId) {
+  const { rows } = await pool.query(
+    `SELECT * FROM game_detailed_view WHERE id = $1;`,
+    [gameId],
+  );
+  return rows[0];
+}
+
 module.exports = {
   getAllGames,
   getGamesByGenre,
@@ -129,4 +85,5 @@ module.exports = {
   getAllGenres,
   getAllPlatforms,
   insertGame,
+  showGameDetails,
 };
