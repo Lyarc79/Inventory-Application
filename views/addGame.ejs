@@ -18,13 +18,13 @@
         <fieldset>
             <legend>Genres</legend>
             <% genresList.forEach(genre => { %>
-                <label><%= genre.name %><input type="checkbox" name="genres" value="<%= genre.id %>" required/></label>
+                <label><%= genre.name %><input type="checkbox" name="genres" value="<%= genre.id %>" /></label>
             <% }) %>
         </fieldset>
         <fieldset>
             <legend>Platforms</legend>
             <% platformsList.forEach(platform => { %>
-                <label><%= platform.name %><input type="checkbox" name="platforms" value="<%= platform.id %>" required/></label>
+                <label><%= platform.name %><input type="checkbox" name="platforms" value="<%= platform.id %>" /></label>
             <% }) %>
         </fieldset>
         <button type="submit">Add Game</button>
