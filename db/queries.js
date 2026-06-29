@@ -128,33 +128,31 @@ async function updateGameDetails(
 }
 
 async function deleteGame(gameId) {
-  await pool.query("BEGIN");
-  const deleteGenres = await pool.query(
-    `DELETE FROM game_genres WHERE game_id = $1`,
-    [gameId],
-  );
-  const deletePlatforms = await pool.query(
-    `DELETE FROM game_platforms WHERE game_id = $1`,
-    [gameId],
-  );
   const deleteGame = await pool.query(`DELETE FROM games WHERE id = $1`, [
     gameId,
   ]);
-  await pool.query("COMMIT");
 }
 
 async function insertGenre(genre) {
   await pool.query(
-    `INSERT INTO genres (name) VALUES ($1) ON CONFLICT do (name) DO NOTHING`,
+    `INSERT INTO genres (name) VALUES ($1) ON CONFLICT (name) DO NOTHING`,
     [genre],
   );
 }
 
 async function insertPlatform(platform) {
   await pool.query(
-    `INSERT INTO platforms (name) VALUES ($1) ON CONFLICT do (name) DO NOTHING`,
+    `INSERT INTO platforms (name) VALUES ($1) ON CONFLICT (name) DO NOTHING`,
     [platform],
   );
+}
+
+async function deleteGenre(genreId) {
+  await pool.query(`DELETE FROM genres WHERE id = $1`, [genreId]);
+}
+
+async function deletePlatform(platformId) {
+  await pool.query(`DELETE FROM platforms WHERE id = $1`, [platformId]);
 }
 
 module.exports = {
@@ -169,4 +167,6 @@ module.exports = {
   deleteGame,
   insertGenre,
   insertPlatform,
+  deleteGenre,
+  deletePlatform,
 };
