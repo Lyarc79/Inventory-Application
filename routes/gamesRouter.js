@@ -5,6 +5,11 @@ const gamesRouter = Router();
 gamesRouter.get("/", gamesController.getGames);
 gamesRouter.get("/new", gamesController.getCreateGameForm);
 gamesRouter.post("/new", gamesController.postCreateGameForm);
+
+gamesRouter.get("/genres/new", gamesController.getAddGenre);
+gamesRouter.post("/genres", gamesController.postAddGenre);
+gamesRouter.get("/platforms/new", gamesController.getAddPlatform);
+gamesRouter.post("/platforms", gamesController.postAddPlatform);
 gamesRouter.get("/genres/:genreId", gamesController.getGamesByGenreList);
 gamesRouter.get(
   "/platforms/:platformId",

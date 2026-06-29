@@ -149,6 +149,30 @@ async function postDeleteGame(req, res) {
   res.redirect("/");
 }
 
+async function getAddGenre(req, res) {
+  const genres = await db.getAllGenres();
+  res.render("addGenre", {
+    genresList: genres,
+  });
+}
+
+async function postAddGenre(req, res) {
+  const newGenre = await db.insertGenre(req.body.genre);
+  res.redirect("/");
+}
+
+async function getAddPlatform(req, res) {
+  const platforms = await db.getAllPlatforms();
+  res.render("addPlatform", {
+    platformsList: platforms,
+  });
+}
+
+async function postAddPlatform(req, res) {
+  const newPlatform = await db.insertPlatform(req.body.platform);
+  res.redirect("/");
+}
+
 module.exports = {
   getGames,
   getGamesByGenreList,
@@ -159,4 +183,8 @@ module.exports = {
   getEditGameForm,
   postEditGameForm,
   postDeleteGame,
+  getAddGenre,
+  postAddGenre,
+  getAddPlatform,
+  postAddPlatform,
 };

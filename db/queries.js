@@ -143,6 +143,20 @@ async function deleteGame(gameId) {
   await pool.query("COMMIT");
 }
 
+async function insertGenre(genre) {
+  await pool.query(
+    `INSERT INTO genres (name) VALUES ($1) ON CONFLICT do (name) DO NOTHING`,
+    [genre],
+  );
+}
+
+async function insertPlatform(platform) {
+  await pool.query(
+    `INSERT INTO platforms (name) VALUES ($1) ON CONFLICT do (name) DO NOTHING`,
+    [platform],
+  );
+}
+
 module.exports = {
   getAllGames,
   getGamesByGenre,
@@ -153,4 +167,6 @@ module.exports = {
   showGameDetails,
   updateGameDetails,
   deleteGame,
+  insertGenre,
+  insertPlatform,
 };

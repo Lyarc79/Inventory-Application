@@ -1,0 +1,21 @@
+<html>
+  <head></head>
+  <body>
+    <div class="genres">
+        <h3>Genres</h3>
+            <ul>
+                <% genresList.forEach(genre => { %>
+                    <li>
+                        <a href="/genres/<%= genre.id %>"><%= genre.name %></a>
+                    </li>
+                <% }) %>
+            </ul>
+    </div>
+    <a href="/">Back to home</a>
+    <form action="/genres" method="POST">
+      <label for="genre">Genre name:</label>
+      <input type="text" name="genre" id="genre" required />
+      <button type="submit">Add Genre</button>
+    </form>
+  </body>
+</html>
