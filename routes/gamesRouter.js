@@ -19,5 +19,7 @@ gamesRouter.get("/games/:id", gamesController.getGameDetails);
 gamesRouter.get("/games/:id/edit", gamesController.getEditGameForm);
 gamesRouter.post("/games/:id/edit", gamesController.postEditGameForm);
 gamesRouter.post("/games/:id/delete", gamesController.postDeleteGame);
+gamesRouter.post("/genres/:id/delete", gamesController.postDeleteGenre);
+gamesRouter.post("/platforms/:id/delete", gamesController.postDeletePlatform);
 
 module.exports = gamesRouter;

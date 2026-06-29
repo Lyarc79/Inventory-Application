@@ -173,6 +173,18 @@ async function postAddPlatform(req, res) {
   res.redirect("/");
 }
 
+async function postDeleteGenre(req, res) {
+  const genreId = req.params.id;
+  const deleteSelectedGenre = await db.deleteGenre(genreId);
+  res.redirect("/games");
+}
+
+async function postDeletePlatform(req, res) {
+  const platformId = req.params.id;
+  const deleteSelectedPlatform = await db.deletePlatform(platformId);
+  res.redirect("/games");
+}
+
 module.exports = {
   getGames,
   getGamesByGenreList,
@@ -187,4 +199,6 @@ module.exports = {
   postAddGenre,
   getAddPlatform,
   postAddPlatform,
+  postDeleteGenre,
+  postDeletePlatform,
 };
