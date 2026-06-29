@@ -2,9 +2,9 @@ const { Router } = require("express");
 const gamesController = require("../controllers/gamesController");
 const gamesRouter = Router();
 
-gamesRouter.get("/", gamesController.getGames);
-gamesRouter.get("/new", gamesController.getCreateGameForm);
-gamesRouter.post("/new", gamesController.postCreateGameForm);
+gamesRouter.get("/games", gamesController.getGames);
+gamesRouter.get("/games/new", gamesController.getCreateGameForm);
+gamesRouter.post("/games", gamesController.postCreateGameForm);
 
 gamesRouter.get("/genres/new", gamesController.getAddGenre);
 gamesRouter.post("/genres", gamesController.postAddGenre);

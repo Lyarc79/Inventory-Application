@@ -85,7 +85,7 @@ async function postCreateGameForm(req, res) {
     genreIds,
     platformIds,
   );
-  res.redirect("/");
+  res.redirect("/games");
 }
 
 async function getGameDetails(req, res) {
