@@ -42,7 +42,7 @@
         </div>
         <div class="actions">
             <a href="/games/<%= game.id %>/edit" class="edit-btn">Edit Game</a>
-            <a href="/games/<%= game.id %>/delete" class="delete-btn">Delete Game</a>
+            <form action="/games/<%= game.id %>/delete" method="POST"><button type="submit" class="delete-btn">Delete Game</a></form>
         </div>
       </div>
     </main>

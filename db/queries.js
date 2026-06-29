@@ -127,6 +127,22 @@ async function updateGameDetails(
   await pool.query("COMMIT");
 }
 
+async function deleteGame(gameId) {
+  await pool.query("BEGIN");
+  const deleteGenres = await pool.query(
+    `DELETE FROM game_genres WHERE game_id = $1`,
+    [gameId],
+  );
+  const deletePlatforms = await pool.query(
+    `DELETE FROM game_platforms WHERE game_id = $1`,
+    [gameId],
+  );
+  const deleteGame = await pool.query(`DELETE FROM games WHERE id = $1`, [
+    gameId,
+  ]);
+  await pool.query("COMMIT");
+}
+
 module.exports = {
   getAllGames,
   getGamesByGenre,
@@ -136,4 +152,5 @@ module.exports = {
   insertGame,
   showGameDetails,
   updateGameDetails,
+  deleteGame,
 };

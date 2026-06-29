@@ -143,6 +143,12 @@ async function postEditGameForm(req, res) {
   res.redirect(`/games/${gameId}`);
 }
 
+async function postDeleteGame(req, res) {
+  const gameId = req.params.id;
+  const deleteGame = await db.deleteGame(gameId);
+  res.redirect("/");
+}
+
 module.exports = {
   getGames,
   getGamesByGenreList,
@@ -152,4 +158,5 @@ module.exports = {
   getGameDetails,
   getEditGameForm,
   postEditGameForm,
+  postDeleteGame,
 };
