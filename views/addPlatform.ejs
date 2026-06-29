@@ -7,6 +7,7 @@
                 <% platformsList.forEach(platform => { %>
                     <li>
                         <a href="/platforms/<%= platform.id %>"><%= platform.name %></a>
+                        <form action="/platforms/<%= platform.id %>/delete" method="POST"><button type="submit">Delete</button></form>
                     </li>
                 <% }) %>
             </ul>

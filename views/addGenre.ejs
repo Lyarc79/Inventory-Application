@@ -7,6 +7,7 @@
                 <% genresList.forEach(genre => { %>
                     <li>
                         <a href="/genres/<%= genre.id %>"><%= genre.name %></a>
+                        <form action="/genres/<%= genre.id %>/delete" method="POST"><button type="submit">Delete</button></form>
                     </li>
                 <% }) %>
             </ul>
