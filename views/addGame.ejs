@@ -1,30 +1,32 @@
 <html>
   <head></head>
   <body>
-    <h1><%= title %></h1>
+     <pre><%= JSON.stringify(game, null, 2) %></pre>
+    <%- include('partials/errors') %>
+    <h1>Add New Game</h1>
     <form action="/games" method="POST">
       <label for="title">Title</label>
-      <input type="text" name="title" id="title" required/>
+      <input type="text" name="title" id="title" value="<%= game.title %>" required/>
       <label for="developer">Developer:</label>
-      <input type="text" name="developer" id="developer" required/>
+      <input type="text" name="developer_name" id="developer_name" value="<%= game.developer_name %>" required/>
       <label for="publisher">Publisher:</label>
-      <input type="text" name="publisher" id="publisher" required/>
+      <input type="text" name="publisher_name" id="publisher_name" value="<%= game.publisher_name %>" required/>
       <label for="date">Release Date:</label>
-      <input type="date" name="date" id="date" required/>
+      <input type="date" name="release_date" id="release_date" value="<%= game.release_date ? new Date(game.release_date).toLocaleDateString('sv-SE') : '' %>" required/>
       <label for="price">Price:</label>
-      <input type="text" name="price" id="price" required/>
+      <input type="text" name="price" id="price" value="<%= game.price %>" required/>
       <label for="coverImg">Cover Image URL</label>
-      <input type="text" name="coverImg" id="coverImg" />
+      <input type="text" name="cover_image_url" id="cover_image_url" value="<%= game.cover_image_url %>" />
         <fieldset>
             <legend>Genres</legend>
             <% genresList.forEach(genre => { %>
-                <label><%= genre.name %><input type="checkbox" name="genres" value="<%= genre.id %>" /></label>
+                <label><%= genre.name %><input type="checkbox" name="genres" value="<%= genre.id %>"<%= game.genres.includes(genre.name) || game.genres.includes(String(genre.id)) ? 'checked' : '' %>/></label>
             <% }) %>
         </fieldset>
         <fieldset>
             <legend>Platforms</legend>
             <% platformsList.forEach(platform => { %>
-                <label><%= platform.name %><input type="checkbox" name="platforms" value="<%= platform.id %>" /></label>
+                <label><%= platform.name %><input type="checkbox" name="platforms" value="<%= platform.id %>"<%= game.platforms.includes(platform.name) || game.platforms.includes(String(platform.id)) ? 'checked' : '' %>/></label>
             <% }) %>
         </fieldset>
         <button type="submit">Add Game</button>

@@ -1,4 +1,5 @@
 const db = require("../db/queries");
+const { validationResult } = require("express-validator");
 
 async function getGames(req, res) {
   const [games, genres, platforms] = await Promise.all([
@@ -52,40 +53,48 @@ async function getCreateGameForm(req, res) {
     db.getAllPlatforms(),
   ]);
   res.render("addGame", {
-    title: "Add New Game",
     genresList: genres,
     platformsList: platforms,
+    game: {},
   });
 }
 
 async function postCreateGameForm(req, res) {
-  const {
-    title,
-    developer,
-    publisher,
-    date,
-    price,
-    coverImg,
-    genres,
-    platforms,
-  } = req.body;
-  const genreIds = Array.isArray(genres) ? genres : genres ? [genres] : [];
-  const platformIds = Array.isArray(platforms)
-    ? platforms
-    : platforms
-      ? [platforms]
-      : [];
-  await db.insertGame(
-    title,
-    price,
-    date,
-    developer,
-    publisher,
-    coverImg,
-    genreIds,
-    platformIds,
-  );
-  res.redirect("/games");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const [genres, platforms] = await Promise.all([
+      db.getAllGenres(),
+      db.getAllPlatforms(),
+    ]);
+    res.render("addGame", {
+      genresList: genres,
+      platformsList: platforms,
+      errors: errors.array(),
+      game: req.body,
+    });
+  } else {
+    const {
+      title,
+      developer_name,
+      publisher_name,
+      release_date,
+      price,
+      cover_image_url,
+      genres,
+      platforms,
+    } = req.body;
+    await db.insertGame(
+      title,
+      price,
+      release_date,
+      developer_name,
+      publisher_name,
+      cover_image_url,
+      genres,
+      platforms,
+    );
+    res.redirect("/games");
+  }
 }
 
 async function getGameDetails(req, res) {
@@ -104,7 +113,6 @@ async function getEditGameForm(req, res) {
     db.getAllPlatforms(),
   ]);
   res.render("editGame", {
-    title: "Edit Game",
     game: game,
     genresList: genres,
     platformsList: platforms,
@@ -113,40 +121,50 @@ async function getEditGameForm(req, res) {
 
 async function postEditGameForm(req, res) {
   const gameId = req.params.id;
-  const {
-    title,
-    developer,
-    publisher,
-    date,
-    price,
-    coverImg,
-    genres,
-    platforms,
-  } = req.body;
-  const genreIds = Array.isArray(genres) ? genres : genres ? [genres] : [];
-  const platformIds = Array.isArray(platforms)
-    ? platforms
-    : platforms
-      ? [platforms]
-      : [];
-  await db.updateGameDetails(
-    gameId,
-    title,
-    price,
-    date,
-    developer,
-    publisher,
-    coverImg,
-    genreIds,
-    platformIds,
-  );
-  res.redirect(`/games/${gameId}`);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const [game, genres, platforms] = await Promise.all([
+      db.showGameDetails(gameId),
+      db.getAllGenres(),
+      db.getAllPlatforms(),
+    ]);
+    const blendedGameData = { ...game, ...req.body };
+    res.render("editGame", {
+      game: blendedGameData,
+      genresList: genres,
+      platformsList: platforms,
+      errors: errors.array(),
+    });
+  } else {
+    const {
+      title,
+      developer_name,
+      publisher_name,
+      release_date,
+      price,
+      cover_image_url,
+      genres,
+      platforms,
+    } = req.body;
+    await db.updateGameDetails(
+      gameId,
+      title,
+      developer_name,
+      publisher_name,
+      release_date,
+      price,
+      cover_image_url,
+      genres,
+      platforms,
+    );
+    res.redirect(`/games/${gameId}`);
+  }
 }
 
 async function postDeleteGame(req, res) {
   const gameId = req.params.id;
   const deleteGame = await db.deleteGame(gameId);
-  res.redirect("/");
+  res.redirect("/games");
 }
 
 async function getAddGenre(req, res) {
@@ -157,8 +175,17 @@ async function getAddGenre(req, res) {
 }
 
 async function postAddGenre(req, res) {
-  const newGenre = await db.insertGenre(req.body.genre);
-  res.redirect("/");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const genres = await db.getAllGenres();
+    res.render("addGenre.ejs", {
+      genresList: genres,
+      errors: errors.array(),
+    });
+  } else {
+    const newGenre = await db.insertGenre(req.body.genre);
+    res.redirect("/games");
+  }
 }
 
 async function getAddPlatform(req, res) {
@@ -169,8 +196,17 @@ async function getAddPlatform(req, res) {
 }
 
 async function postAddPlatform(req, res) {
-  const newPlatform = await db.insertPlatform(req.body.platform);
-  res.redirect("/");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const platforms = await db.getAllPlatforms();
+    res.render("addPlatform", {
+      platformList: platforms,
+      errors: errors.array(),
+    });
+  } else {
+    const newPlatform = await db.insertPlatform(req.body.platform);
+    res.redirect("/games");
+  }
 }
 
 async function postDeleteGenre(req, res) {

@@ -1,6 +1,7 @@
 <html>
   <head></head>
   <body>
+    <%- include('partials/errors') %>
     <div class="genres">
         <h3>Genres</h3>
             <ul>
@@ -15,7 +16,7 @@
     <a href="/">Back to home</a>
     <form action="/genres" method="POST">
       <label for="genre">Genre name:</label>
-      <input type="text" name="genre" id="genre" required />
+      <input type="text" name="genre" id="genre" required/>
       <button type="submit">Add Genre</button>
     </form>
   </body>
