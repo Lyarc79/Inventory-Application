@@ -42,7 +42,11 @@
         </div>
         <div class="actions">
             <a href="/games/<%= game.id %>/edit" class="edit-btn">Edit Game</a>
-            <form action="/games/<%= game.id %>/delete" method="POST"><button type="submit" class="delete-btn">Delete Game</a></form>
+            <form action="/games/<%= game.id %>/delete" method="POST">
+              <label for="adminPassword">Admin Password Required:</label>
+              <input type="password" name="adminPassword" id="adminPassword" placeholder="Enter secret passcode" required>
+              <button type="submit" class="delete-btn">Delete Game</a>
+            </form>
         </div>
       </div>
     </main>

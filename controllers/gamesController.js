@@ -1,11 +1,13 @@
-const db = require("../db/queries");
+const gamesDb = require("../db/gamesQueries");
+const genresDb = require("../db/genresQueries");
+const platformsDb = require("../db/platformsQueries");
 const { validationResult } = require("express-validator");
 
 async function getGames(req, res) {
   const [games, genres, platforms] = await Promise.all([
-    db.getAllGames(),
-    db.getAllGenres(),
-    db.getAllPlatforms(),
+    gamesDb.getAllGames(),
+    genresDb.getAllGenres(),
+    platformsDb.getAllPlatforms(),
   ]);
   res.render("index", {
     title: "Video Game Inventory",
@@ -18,9 +20,9 @@ async function getGames(req, res) {
 async function getGamesByGenreList(req, res) {
   const genreId = req.params.genreId;
   const [games, genres, platforms] = await Promise.all([
-    db.getGamesByGenre(genreId),
-    db.getAllGenres(),
-    db.getAllPlatforms(),
+    gamesDb.getGamesByGenre(genreId),
+    genresDb.getAllGenres(),
+    platformsDb.getAllPlatforms(),
   ]);
   res.render("index", {
     title: "Filtered Games",
@@ -34,9 +36,9 @@ async function getGamesByGenreList(req, res) {
 async function getGamesByPlatformList(req, res) {
   const platformId = req.params.platformId;
   const [games, genres, platforms] = await Promise.all([
-    db.getGamesByPlatform(platformId),
-    db.getAllGenres(),
-    db.getAllPlatforms(),
+    gamesDb.getGamesByPlatform(platformId),
+    genresDb.getAllGenres(),
+    platformsDb.getAllPlatforms(),
   ]);
   res.render("index", {
     title: "Filtered Games",
@@ -49,13 +51,13 @@ async function getGamesByPlatformList(req, res) {
 
 async function getCreateGameForm(req, res) {
   const [genres, platforms] = await Promise.all([
-    db.getAllGenres(),
-    db.getAllPlatforms(),
+    genresDb.getAllGenres(),
+    platformsDb.getAllPlatforms(),
   ]);
   res.render("addGame", {
     genresList: genres,
     platformsList: platforms,
-    game: {},
+    game: { genres: [], platforms: [] },
   });
 }
 
@@ -63,8 +65,8 @@ async function postCreateGameForm(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const [genres, platforms] = await Promise.all([
-      db.getAllGenres(),
-      db.getAllPlatforms(),
+      genresDb.getAllGenres(),
+      platformsDb.getAllPlatforms(),
     ]);
     res.render("addGame", {
       genresList: genres,
@@ -83,7 +85,7 @@ async function postCreateGameForm(req, res) {
       genres,
       platforms,
     } = req.body;
-    await db.insertGame(
+    await gamesDb.insertGame(
       title,
       price,
       release_date,
@@ -99,7 +101,7 @@ async function postCreateGameForm(req, res) {
 
 async function getGameDetails(req, res) {
   const gameId = req.params.id;
-  const game = await db.showGameDetails(gameId);
+  const game = await gamesDb.showGameDetails(gameId);
   res.render("gameDetails", {
     game: game,
   });
@@ -108,9 +110,9 @@ async function getGameDetails(req, res) {
 async function getEditGameForm(req, res) {
   const gameId = req.params.id;
   const [game, genres, platforms] = await Promise.all([
-    db.showGameDetails(gameId),
-    db.getAllGenres(),
-    db.getAllPlatforms(),
+    gamesDb.showGameDetails(gameId),
+    genresDb.getAllGenres(),
+    platformsDb.getAllPlatforms(),
   ]);
   res.render("editGame", {
     game: game,
@@ -124,9 +126,9 @@ async function postEditGameForm(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const [game, genres, platforms] = await Promise.all([
-      db.showGameDetails(gameId),
-      db.getAllGenres(),
-      db.getAllPlatforms(),
+      gamesDb.showGameDetails(gameId),
+      genresDb.getAllGenres(),
+      platformsDb.getAllPlatforms(),
     ]);
     const blendedGameData = { ...game, ...req.body };
     res.render("editGame", {
@@ -138,21 +140,21 @@ async function postEditGameForm(req, res) {
   } else {
     const {
       title,
+      price,
+      release_date,
       developer_name,
       publisher_name,
-      release_date,
-      price,
       cover_image_url,
       genres,
       platforms,
     } = req.body;
-    await db.updateGameDetails(
+    await gamesDb.updateGameDetails(
       gameId,
       title,
+      price,
+      release_date,
       developer_name,
       publisher_name,
-      release_date,
-      price,
       cover_image_url,
       genres,
       platforms,
@@ -162,62 +164,16 @@ async function postEditGameForm(req, res) {
 }
 
 async function postDeleteGame(req, res) {
-  const gameId = req.params.id;
-  const deleteGame = await db.deleteGame(gameId);
-  res.redirect("/games");
-}
-
-async function getAddGenre(req, res) {
-  const genres = await db.getAllGenres();
-  res.render("addGenre", {
-    genresList: genres,
-  });
-}
-
-async function postAddGenre(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const genres = await db.getAllGenres();
-    res.render("addGenre.ejs", {
-      genresList: genres,
+    const game = await gamesDb.showGameDetails(req.params.id);
+    return res.render("gameDetails", {
+      game: game,
+      validationErrors: errors.mapped(),
       errors: errors.array(),
     });
-  } else {
-    const newGenre = await db.insertGenre(req.body.genre);
-    res.redirect("/games");
   }
-}
-
-async function getAddPlatform(req, res) {
-  const platforms = await db.getAllPlatforms();
-  res.render("addPlatform", {
-    platformsList: platforms,
-  });
-}
-
-async function postAddPlatform(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const platforms = await db.getAllPlatforms();
-    res.render("addPlatform", {
-      platformList: platforms,
-      errors: errors.array(),
-    });
-  } else {
-    const newPlatform = await db.insertPlatform(req.body.platform);
-    res.redirect("/games");
-  }
-}
-
-async function postDeleteGenre(req, res) {
-  const genreId = req.params.id;
-  const deleteSelectedGenre = await db.deleteGenre(genreId);
-  res.redirect("/games");
-}
-
-async function postDeletePlatform(req, res) {
-  const platformId = req.params.id;
-  const deleteSelectedPlatform = await db.deletePlatform(platformId);
+  await gamesDb.deleteGame(req.params.id);
   res.redirect("/games");
 }
 
@@ -231,10 +187,4 @@ module.exports = {
   getEditGameForm,
   postEditGameForm,
   postDeleteGame,
-  getAddGenre,
-  postAddGenre,
-  getAddPlatform,
-  postAddPlatform,
-  postDeleteGenre,
-  postDeletePlatform,
 };

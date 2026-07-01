@@ -21,16 +21,6 @@ async function getGamesByPlatform(platformId) {
   return rows;
 }
 
-async function getAllGenres() {
-  const { rows } = await pool.query(`SELECT * FROM genres ORDER BY name`);
-  return rows;
-}
-
-async function getAllPlatforms() {
-  const { rows } = await pool.query(`SELECT * FROM platforms ORDER BY name`);
-  return rows;
-}
-
 async function insertGame(
   title,
   price,
@@ -133,40 +123,12 @@ async function deleteGame(gameId) {
   ]);
 }
 
-async function insertGenre(genre) {
-  await pool.query(
-    `INSERT INTO genres (name) VALUES ($1) ON CONFLICT (name) DO NOTHING`,
-    [genre],
-  );
-}
-
-async function insertPlatform(platform) {
-  await pool.query(
-    `INSERT INTO platforms (name) VALUES ($1) ON CONFLICT (name) DO NOTHING`,
-    [platform],
-  );
-}
-
-async function deleteGenre(genreId) {
-  await pool.query(`DELETE FROM genres WHERE id = $1`, [genreId]);
-}
-
-async function deletePlatform(platformId) {
-  await pool.query(`DELETE FROM platforms WHERE id = $1`, [platformId]);
-}
-
 module.exports = {
   getAllGames,
   getGamesByGenre,
   getGamesByPlatform,
-  getAllGenres,
-  getAllPlatforms,
   insertGame,
   showGameDetails,
   updateGameDetails,
   deleteGame,
-  insertGenre,
-  insertPlatform,
-  deleteGenre,
-  deletePlatform,
 };
