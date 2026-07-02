@@ -61,7 +61,7 @@ const validatePlatform = [
 
 const validateAdminPassword = [
   body("adminPassword").custom((value) => {
-    if (value !== "supersecret123") {
+    if (value !== process.env.ADMIN_PASSWORD) {
       throw new Error("Incorrect admin password. Action denied.");
     }
     return true;
