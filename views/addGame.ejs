@@ -7,15 +7,15 @@
       <label for="title">Title</label>
       <input type="text" name="title" id="title" value="<%= game.title %>" required/>
       <label for="developer">Developer:</label>
-      <input type="text" name="developer_name" id="developer_name" value="<%= game.developer_name %>" required/>
+      <input type="text" name="developer_name" id="developer" value="<%= game.developer_name %>" required/>
       <label for="publisher">Publisher:</label>
-      <input type="text" name="publisher_name" id="publisher_name" value="<%= game.publisher_name %>" required/>
+      <input type="text" name="publisher_name" id="publisher" value="<%= game.publisher_name %>" required/>
       <label for="date">Release Date:</label>
-      <input type="date" name="release_date" id="release_date" value="<%= game.release_date ? new Date(game.release_date).toLocaleDateString('sv-SE') : '' %>" required/>
+      <input type="date" name="release_date" id="date value="<%= game.release_date ? new Date(game.release_date).toLocaleDateString('sv-SE') : '' %>" required/>
       <label for="price">Price:</label>
       <input type="text" name="price" id="price" value="<%= game.price %>" required/>
       <label for="coverImg">Cover Image URL</label>
-      <input type="text" name="cover_image_url" id="cover_image_url" value="<%= game.cover_image_url %>" />
+      <input type="text" name="cover_image_url" id="coverImg" value="<%= game.cover_image_url %>" />
         <fieldset>
             <legend>Genres</legend>
             <% genresList.forEach(genre => { %>
