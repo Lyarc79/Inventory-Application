@@ -8,7 +8,9 @@
                 <% genresList.forEach(genre => { %>
                     <li>
                         <a href="/genres/<%= genre.id %>"><%= genre.name %></a>
-                        <form action="/genres/<%= genre.id %>/delete" method="POST"><button type="submit">Delete</button></form>
+                        <button type="button" class="open-delete-btn" data-id="<%= genre.id %>" data-name="<%= genre.name %>">
+                          Delete
+                        </button>
                     </li>
                 <% }) %>
             </ul>
@@ -19,5 +21,30 @@
       <input type="text" name="genre" id="genre" required/>
       <button type="submit">Add Genre</button>
     </form>
+    <dialog id="delete-modal">
+      <form action="" id="delete-form" method="POST">
+        <h3>Are you sure you want to delete <span id="modal-genre-name"></span>?</h3>
+        <p>Please enter the admin password to confirm:</p>
+        <input type="password" name="adminPassword" id="adminPassword" required placeholder="Admin PIN">
+        <div class="modal-actions">
+          <button type="button" id="close-modal-btn">Cancel</button>
+          <button type="submit">Confirm Delete</button>
+        </div> 
+      </form>
+    </dialog>
+    <script>
+      const deleteDialog = document.getElementById('delete-modal');
+      const deleteForm = document.getElementById('delete-form');
+      const genreName = document.getElementById('modal-genre-name');
+      document.querySelectorAll('.open-delete-btn').forEach((btn) => btn.addEventListener('click', (e) => {
+        const {id, name} = e.target.dataset;
+        genreName.textContent = name;
+        deleteForm.setAttribute('action', `/genres/${id}/delete` );
+        deleteDialog.showModal();
+        document.getElementById('close-modal-btn').addEventListener('click', () => {
+          deleteDialog.close();
+        })
+      }))
+    </script>
   </body>
 </html>
