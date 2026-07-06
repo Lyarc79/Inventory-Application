@@ -24,8 +24,17 @@ async function postAddGenre(req, res) {
 
 async function postDeleteGenre(req, res) {
   const genreId = req.params.id;
-  const deleteSelectedGenre = await genresDb.deleteGenre(genreId);
-  res.redirect("/games");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const genres = await genresDb.getAllGenres();
+    res.render("addGenre.ejs", {
+      genresList: genres,
+      errors: errors.array(),
+    });
+  } else {
+    const deleteSelectedGenre = await genresDb.deleteGenre(genreId);
+    res.redirect("/games");
+  }
 }
 
 module.exports = {
