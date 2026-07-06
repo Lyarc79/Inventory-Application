@@ -24,8 +24,17 @@ async function postAddPlatform(req, res) {
 
 async function postDeletePlatform(req, res) {
   const platformId = req.params.id;
-  const deleteSelectedPlatform = await platformsDb.deletePlatform(platformId);
-  res.redirect("/games");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const platforms = await platformsDb.getAllPlatforms();
+    res.render("addPlatform", {
+      platformsList: platforms,
+      errors: errors.array(),
+    });
+  } else {
+    const deleteSelectedPlatform = await platformsDb.deletePlatform(platformId);
+    res.redirect("/games");
+  }
 }
 
 module.exports = { getAddPlatform, postAddPlatform, postDeletePlatform };

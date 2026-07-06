@@ -12,7 +12,7 @@ async function postAddGenre(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const genres = await genresDb.getAllGenres();
-    res.render("addGenre.ejs", {
+    res.render("addGenre", {
       genresList: genres,
       errors: errors.array(),
     });
@@ -27,7 +27,7 @@ async function postDeleteGenre(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const genres = await genresDb.getAllGenres();
-    res.render("addGenre.ejs", {
+    res.render("addGenre", {
       genresList: genres,
       errors: errors.array(),
     });
