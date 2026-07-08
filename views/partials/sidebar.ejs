@@ -1,0 +1,30 @@
+<aside class="sidebar">
+    <div class="nav-group">
+        <h3>Genres</h3>
+        <ul>
+            <% genresList.forEach(genre => { %>
+                <li>
+                    <a href="/genres/<%= genre.id %>"><%= genre.name %></a>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+    <div class="nav-group">
+        <h3>Platforms</h3>
+        <ul>
+            <% platformsList.forEach(platform => { %>
+                <li>
+                    <a href="/platforms/<%= platform.id %>"><%= platform.name %></a>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+    <div class="nav-group">
+        <h3>Quick Actions</h3>
+        <ul>
+            <li><a href="/games/new">Add Game</a></li>
+            <li><a href="/genres/new">Add Genre</a></li>
+            <li><a href="/platforms/new">Add Platform</a></li>
+        </ul>
+    </div>
+</aside>
