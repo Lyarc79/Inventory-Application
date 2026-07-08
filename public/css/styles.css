@@ -1,22 +1,132 @@
-body {
-  display: flex;
+/* =========================================
+    GLOBAL
+   ========================================= */
+
+:root {
+  --font-title: "Kanit", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --accent-primary: #5540ff;
+  --accent-hover: #444fe7;
+  --accent-soft: #f0eeff;
+  --acent-border: #d8d3ff;
+
+  --text-primary: #0f172a;
+  --text-secondary: #67648b;
+
+  --bg-primary: #f2f1f9;
+  --bg-secondary: #ffffff;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.workspace-wrapper {
+  display: flex;
+  flex: 1;
+}
+
+/* =========================================
+    HEADER PARTIAL
+   ========================================= */
+
+.main-header,
+.sidebar {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+}
+
+.main-header {
+  font-family: var(--font-title);
+  padding: 20px 30px;
+}
+
+.home-btn {
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* =========================================
+    SIDEBAR PARTIAL
+   ========================================= */
 
 .sidebar {
   width: 250px;
-  height: 100vh;
-  position: sticky;
-  top: 0;
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
+.sidebar h3 {
+  font-family: "Kanit", sans-serif;
+  font-size: 0.85 rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  margin-top: 0;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar a {
+  display: block;
+  font-weight: 300;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.sidebar a:hover {
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+.sidebar a.active {
+  background-color: var(--accent-soft);
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+/* =========================================
+    MAIN CONTENT
+   ========================================= */
+
 .main-content {
-  flex-grow: 1;
-  padding: 2rem;
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background-color: var(--bg-primary);
+}
+
+.main-content h1 {
+  font-family: var(--font-title);
 }
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 2rem;
 }
 
@@ -24,16 +134,58 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: var(--bg-secondary);
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px (0, 0, 0, 0.05);
+  overflow: hidden;
+  transition:
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-primary);
+  box-shadow: 0 10px 20px -5px rgba(85, 54, 255, 0.15);
+}
+
+.card-image {
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+
+.card-image img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.card-content h3,
+.card-content a {
+  font-family: var(--font-title);
+  font-weight: 300;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.card-content a:hover {
+  color: var(--accent-hover);
 }
 
 .genre-badge,
 .platform-badge {
+  background-color: var(--accent-soft);
+  color: var(--accent-primary);
+  border: 1px solid var(--acent-border);
+  border-radius: 20px;
   padding: 5px 10px;
-  border-radius: 4px;
-  background-color: lightcoral;
+  font-size: 0.75rem;
+  font-weight: 600;
 }

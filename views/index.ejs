@@ -1,51 +1,39 @@
 <html>
     <head>
-        <link rel="stylesheet" href="/css/styles.css">
+        <%-include('partials/head') %>
     </head>
     <body>
-        <aside class="sidebar">
-            <h3>Genres</h3>
-            <ul>
-                <% genresList.forEach(genre => { %>
-                    <li>
-                        <a href="/genres/<%= genre.id %>"><%= genre.name %></a>
-                    </li>
-                <% }) %>
-            </ul>
-            <h3>Platforms</h3>
-            <ul>
-                <% platformsList.forEach(platform => { %>
-                    <li>
-                        <a href="/platforms/<%= platform.id %>"><%= platform.name %></a>
-                    </li>
-                <% }) %>
-            </ul>
-            <h3>Quick Actions</h3>
-            <ul>
-                <li><a href="/games/new">Add Game</a></li>
-                <li><a href="/genres/new">Add Genre</a></li>
-                <li><a href="/platforms/new">Add Platform</a></li>
-            </ul>
-        </aside>
-        <main class="main-content">
-            <h1><%= title %></h1>
-            <div class="games-grid">
-                <% gamesList.forEach(game => { %>
-                    <div class="game-card">
-                        <div class="card-image">
-                            <img src="<%= game.cover_image_url || '/images/placeholder.png' %>" alt="<%= game.title %> Cover">
+        <%- include('partials/header') %>
+        <div class="workspace-wrapper">
+            <%- include('partials/sidebar') %>
+            <main class="main-content">
+                <h1>Games</h1>
+                <div class="games-grid">
+                    <% gamesList.forEach(game => { %>
+                        <div class="game-card">
+                            <div class="card-image">
+                                <img src="<%= game.cover_image_url || '/images/placeholder.png' %>" alt="<%= game.title %> Cover">
+                            </div>
+                            <div class="card-content">
+                                <h3>
+                                    <a href="/games/<%= game.id %>"><%= game.title %></a>
+                                </h3>
+                            </div>
                         </div>
-                        <div class="card-content">
-                            <h3>
-                                <a href="/games/<%= game.id %>"><%= game.title %></a>
-                            </h3>
-                        </div>
-                    </div>
-                <% }) %>
-            </div>
-        </main>
-        <% if (locals.isFiltered) { %>
-            <a href="/">Back to home</a>
-        <% } %>
+                    <% }) %>
+                </div>
+            </main>
+            <% if (locals.isFiltered) { %>
+                <a href="/">Back to home</a>
+            <% } %>
+        </div>
+        <script>
+            const currentUrl = window.location.pathname;
+            document.querySelectorAll('.sidebar a').forEach(link => {
+                if(link.getAttribute('href') === currentUrl){
+                    link.classList.add('active');
+                }
+            })
+        </script>
     </body>
 </html>
