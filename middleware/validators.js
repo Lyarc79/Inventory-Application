@@ -4,20 +4,17 @@ const validateGame = [
   body("title")
     .trim()
     .isLength({ min: 1, max: 50 })
-    .withMessage("Game name must be between 1 and 50 characters.")
-    .escape(),
+    .withMessage("Game name must be between 1 and 50 characters."),
 
   body("developer_name")
     .trim()
     .isLength({ min: 1, max: 30 })
-    .withMessage("Developer name must be between 1 and 30 characters.")
-    .escape(),
+    .withMessage("Developer name must be between 1 and 30 characters."),
 
   body("publisher_name")
     .trim()
     .isLength({ min: 1, max: 30 })
-    .withMessage("Publisher name must be between 1 and 30 characters.")
-    .escape(),
+    .withMessage("Publisher name must be between 1 and 30 characters."),
 
   body("release_date")
     .trim()
@@ -27,8 +24,7 @@ const validateGame = [
   body("price")
     .trim()
     .isFloat({ min: 0, maxDecimalPlaces: 2 })
-    .withMessage("Price has to be a valid numeric number.")
-    .escape(),
+    .withMessage("Price has to be a valid numeric number."),
 
   body("cover_image_url")
     .optional({ checkFalsy: true })
