@@ -1,7 +1,9 @@
 const pool = require("./pool");
 
 async function getAllGames() {
-  const { rows } = await pool.query(`SELECT * FROM game_detailed_view;`);
+  const { rows } = await pool.query(
+    `SELECT * FROM game_detailed_view ORDER BY title ASC;`,
+  );
   return rows;
 }
 
