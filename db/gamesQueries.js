@@ -118,9 +118,13 @@ async function updateGameDetails(
 }
 
 async function deleteGame(gameId) {
-  const deleteGame = await pool.query(`DELETE FROM games WHERE id = $1`, [
-    gameId,
-  ]);
+  await pool.query(`DELETE FROM games WHERE id = $1`, [gameId]);
+  await pool.query(
+    `DELETE FROM developers WHERE id NOT IN (SELECT developer_id FROM games WHERE developer_id IS NOT NULL)`,
+  );
+  await pool.query(
+    `DELETE FROM publishers WHERE id NOT IN (SELECT publisher_id FROM games WHERE publisher_id IS NOT NULL)`,
+  );
 }
 
 module.exports = {
