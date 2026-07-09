@@ -7,7 +7,10 @@
         <div class="workspace-wrapper">
             <%- include('partials/sidebar') %>
             <main class="main-content">
-                <h1>Games</h1>
+                <div class="grid-header">
+                    <h1>Games</h1>
+                    <a href="/games/new">Add Game</a>
+                </div>
                 <div class="games-grid">
                     <% gamesList.forEach(game => { %>
                         <div class="game-card">
@@ -18,6 +21,7 @@
                                 <h3>
                                     <a href="/games/<%= game.id %>"><%= game.title %></a>
                                 </h3>
+                                <p><%= game.price %>€</p>
                             </div>
                         </div>
                     <% }) %>
