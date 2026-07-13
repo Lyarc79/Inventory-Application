@@ -15,7 +15,11 @@
                     <% gamesList.forEach(game => { %>
                         <div class="game-card">
                             <div class="card-image">
-                                <img src="<%= game.cover_image_url || '/images/placeholder.png' %>" alt="<%= game.title %> Cover">
+                                <% if(game.cover_image_url) { %>
+                                    <img src="<%= game.cover_image_url %>" alt="<%= game.title %>">
+                                <% } else { %>
+                                    <span>Cover not available</span>
+                                    <% } %>
                             </div>
                             <div class="card-content">
                                 <h3>

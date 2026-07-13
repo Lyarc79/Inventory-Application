@@ -17,11 +17,13 @@
   --accent-soft: #f0eeff;
   --acent-border: #d8d3ff;
 
-  --text-primary: #0f172a;
+  --text-primary: #1f1f1f;
   --text-secondary: #67648b;
 
   --bg-primary: #f2f1f9;
   --bg-secondary: #ffffff;
+  --bg-dark: #202020;
+  --bg-dark-soft: #383838;
 }
 
 body {
@@ -54,6 +56,9 @@ body {
 .main-header {
   font-family: var(--font-title);
   padding: 20px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .home-btn {
@@ -126,7 +131,8 @@ body {
   background-color: var(--bg-primary);
 }
 
-.grid-header {
+.grid-header,
+.form-header {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -138,7 +144,9 @@ body {
   font-family: var(--font-title);
 }
 
-.grid-header a {
+.grid-header a,
+.submit-btn {
+  border: none;
   padding: 0.6rem 1.25rem;
   border-radius: 8px;
   background-color: var(--accent-primary);
@@ -151,7 +159,8 @@ body {
     background-color 0.2s ease;
 }
 
-.grid-header a:hover {
+.grid-header a:hover,
+.submit-btn:hover {
   background-color: #3b34af;
   transform: translateY(-2px);
   box-shadow: 0 5px 12px rgba(130, 99, 241, 0.3);
@@ -187,12 +196,23 @@ body {
 .card-image {
   aspect-ratio: 3/4;
   overflow: hidden;
+  background-color: #2b2a3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-image img {
   object-fit: cover;
   width: 100%;
   height: 100%;
+}
+
+.card-image span {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .card-content {
@@ -223,6 +243,109 @@ body {
 }
 
 /* =========================================
+    ADD GAME FORM
+   ========================================= */
+
+.mainpanel-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 650px;
+  margin: 3rem 0 3rem 6rem;
+}
+
+.mainpanel-container h1 {
+  font-family: var(--font-title);
+}
+
+.form-wrapper {
+  background-color: var(--accent-soft);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid var(--accent-primary);
+}
+
+.form-wrapper h1 {
+  padding: 10px 0 50px 0;
+}
+
+.form-wrapper form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label,
+.form-group legend {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-group input {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: var(--text-primary);
+}
+
+.form-group input:focus {
+  border: 1px solid var(--accent-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.form-group fieldset {
+  padding: 2rem 1rem;
+  border: 1px solid var(--accent-primary);
+  border-radius: 6px;
+}
+
+.checkbox-options-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+
+.checkbox-options-container input {
+  display: none;
+}
+
+.checkbox-options-container label {
+  font-weight: 300;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e2f0;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkbox-item:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.checkbox-item:has(input:checked) {
+  font-weight: 700;
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
+}
+
+/* =========================================
     GAME DETAILS
    ========================================= */
 
@@ -235,4 +358,20 @@ body {
   padding: 5px 10px;
   font-size: 0.75rem;
   font-weight: 600;
+}
+
+.back-btn {
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  background-color: var(--bg-dark);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: var(--bg-dark-soft);
 }
