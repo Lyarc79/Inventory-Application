@@ -25,7 +25,6 @@ gamesRouter.post(
   gamesController.postDeleteGame,
 );
 
-gamesRouter.get("/genres/:genreId", gamesController.getGamesByGenreList);
 gamesRouter.get(
   "/platforms/:platformId",
   gamesController.getGamesByPlatformList,

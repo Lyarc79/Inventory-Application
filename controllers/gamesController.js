@@ -3,34 +3,31 @@ const genresDb = require("../db/genresQueries");
 const platformsDb = require("../db/platformsQueries");
 const { validationResult } = require("express-validator");
 
-async function getGames(req, res) {
-  const [games, genres, platforms] = await Promise.all([
-    gamesDb.getAllGames(),
-    genresDb.getAllGenres(),
-    platformsDb.getAllPlatforms(),
-  ]);
-  res.render("index", {
-    title: "Video Game Inventory",
-    gamesList: games,
-    genresList: genres,
-    platformsList: platforms,
-  });
-}
+async function getGames(req, res, next) {
+  try {
+    const selectedGenreId = req.query.genre;
+    let games;
 
-async function getGamesByGenreList(req, res) {
-  const genreId = req.params.genreId;
-  const [games, genres, platforms] = await Promise.all([
-    gamesDb.getGamesByGenre(genreId),
-    genresDb.getAllGenres(),
-    platformsDb.getAllPlatforms(),
-  ]);
-  res.render("index", {
-    title: "Filtered Games",
-    gamesList: games,
-    genresList: genres,
-    platformsList: platforms,
-    isFiltered: true,
-  });
+    if (selectedGenreId) {
+      games = await gamesDb.getGamesByGenre(selectedGenreId);
+    } else {
+      games = await gamesDb.getAllGames();
+    }
+
+    const [genres, platforms] = await Promise.all([
+      genresDb.getAllGenres(),
+      platformsDb.getAllPlatforms(),
+    ]);
+
+    res.render("index", {
+      gamesList: games,
+      genresList: genres,
+      platformsList: platforms,
+      selectedGenreId: selectedGenreId || null,
+    });
+  } catch (err) {
+    next(err);
+  }
 }
 
 async function getGamesByPlatformList(req, res) {
@@ -179,7 +176,6 @@ async function postDeleteGame(req, res) {
 
 module.exports = {
   getGames,
-  getGamesByGenreList,
   getGamesByPlatformList,
   getCreateGameForm,
   postCreateGameForm,

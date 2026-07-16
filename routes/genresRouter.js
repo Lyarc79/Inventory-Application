@@ -7,8 +7,8 @@ const {
 
 const genresRouter = Router();
 
-genresRouter.get("/new", genresController.getAddGenre);
-genresRouter.post("/new", validateGenre, genresController.postAddGenre);
+genresRouter.get("/", genresController.getAddGenre);
+genresRouter.post("/", validateGenre, genresController.postAddGenre);
 genresRouter.post(
   "/:id/delete",
   validateAdminPassword,

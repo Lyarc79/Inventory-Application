@@ -1,0 +1,65 @@
+<html>
+  <head>
+     <%-include('partials/head') %>
+  </head>
+  <body>
+    <%- include('partials/header') %>
+    <%- include('partials/errors') %>
+    <div class="workspace-wrapper">
+       <%- include('partials/sidebar') %>
+      <div class="mainpanel-genrescontainer">
+        <div class="genres-header">
+          <div class="header-text">
+            <h1>Game Genres</h1>
+            <p>Manage and browse games by category</p>
+          </div>
+            <form action="/genres" method="POST" class="add-genre-form">
+            <label for="genre">Genre name:</label>
+            <input type="text" name="genre" id="genre" required placeholder="New genre name (e.g. RPG, Action)..."/>
+            <button type="submit">Add Genre</button>
+          </form>
+        </div>
+        <div class="genres-grid">
+          <% genresList.forEach(genre => { %>
+            <div class="genre-card">
+              <div class="genre-card-header">
+                 <button type="button" class="open-delete-btn" data-id="<%= genre.id %>" data-name="<%= genre.name %>">Delete</button>
+              </div>
+              <div class="genre-card-body">
+                <h3>
+                  <a href="/games?genre=<%= genre.id %>"><%= genre.name %></a>
+                </h3>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      
+        <dialog id="delete-modal">
+          <form action="" id="delete-form" method="POST">
+            <h3>Are you sure you want to delete <span id="modal-genre-name"></span> genre ?</h3>
+            <p>Please enter the admin password to confirm:</p>
+            <input type="password" name="adminPassword" id="adminPassword" required placeholder="Admin PIN">
+            <div class="modal-actions">
+              <button type="button" id="close-modal-btn">Cancel</button>
+              <button type="submit">Confirm Delete</button>
+            </div>
+          </form>
+        </dialog>
+      </div>
+    </div>
+    <script>
+      const deleteDialog = document.getElementById('delete-modal');
+      const deleteForm = document.getElementById('delete-form');
+      const genreName = document.getElementById('modal-genre-name');
+      document.querySelectorAll('.open-delete-btn').forEach((btn) => btn.addEventListener('click', (e) => {
+        const {id, name} = e.target.dataset;
+        genreName.textContent = name;
+        deleteForm.setAttribute('action', `/genres/${id}/delete` );
+        deleteDialog.showModal();
+        document.getElementById('close-modal-btn').addEventListener('click', () => {
+          deleteDialog.close();
+        })
+      }))
+    </script>
+  </body>
+</html>

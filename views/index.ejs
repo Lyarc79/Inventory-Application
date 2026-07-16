@@ -36,7 +36,7 @@
             <% } %>
         </div>
         <script>
-            const currentUrl = window.location.pathname;
+            const currentUrl = window.location.pathname + window.location.search;
             document.querySelectorAll('.sidebar a').forEach(link => {
                 if(link.getAttribute('href') === currentUrl){
                     link.classList.add('active');
