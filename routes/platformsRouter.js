@@ -7,9 +7,9 @@ const {
 
 const platformsRouter = Router();
 
-platformsRouter.get("/new", platformsController.getAddPlatform);
+platformsRouter.get("/", platformsController.getAddPlatform);
 platformsRouter.post(
-  "/new",
+  "/",
   validatePlatform,
   platformsController.postAddPlatform,
 );

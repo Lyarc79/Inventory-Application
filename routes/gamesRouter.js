@@ -25,9 +25,4 @@ gamesRouter.post(
   gamesController.postDeleteGame,
 );
 
-gamesRouter.get(
-  "/platforms/:platformId",
-  gamesController.getGamesByPlatformList,
-);
-
 module.exports = gamesRouter;

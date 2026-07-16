@@ -6,10 +6,13 @@ const { validationResult } = require("express-validator");
 async function getGames(req, res, next) {
   try {
     const selectedGenreId = req.query.genre;
+    const selectedPlatformId = req.query.platform;
     let games;
 
     if (selectedGenreId) {
       games = await gamesDb.getGamesByGenre(selectedGenreId);
+    } else if (selectedPlatformId) {
+      games = await gamesDb.getGamesByPlatform(selectedPlatformId);
     } else {
       games = await gamesDb.getAllGames();
     }
@@ -24,26 +27,11 @@ async function getGames(req, res, next) {
       genresList: genres,
       platformsList: platforms,
       selectedGenreId: selectedGenreId || null,
+      selectedPlatformId: selectedPlatformId || null,
     });
   } catch (err) {
     next(err);
   }
-}
-
-async function getGamesByPlatformList(req, res) {
-  const platformId = req.params.platformId;
-  const [games, genres, platforms] = await Promise.all([
-    gamesDb.getGamesByPlatform(platformId),
-    genresDb.getAllGenres(),
-    platformsDb.getAllPlatforms(),
-  ]);
-  res.render("index", {
-    title: "Filtered Games",
-    gamesList: games,
-    genresList: genres,
-    platformsList: platforms,
-    isFiltered: true,
-  });
 }
 
 async function getCreateGameForm(req, res) {
@@ -176,7 +164,6 @@ async function postDeleteGame(req, res) {
 
 module.exports = {
   getGames,
-  getGamesByPlatformList,
   getCreateGameForm,
   postCreateGameForm,
   getGameDetails,

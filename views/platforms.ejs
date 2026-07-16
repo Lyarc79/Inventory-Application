@@ -7,7 +7,7 @@
             <ul>
                 <% platformsList.forEach(platform => { %>
                     <li>
-                        <a href="/platforms/<%= platform.id %>"><%= platform.name %></a>
+                        <a href="/games?platform=<%= platform.id %>"><%= platform.name %></a>
                         <button type="button" class="open-delete-btn" data-id="<%= platform.id %>" data-name="<%= platform.name %>">
                           Delete
                         </button>
@@ -16,7 +16,7 @@
             </ul>
     </div>
     <a href="/">Back to home</a>
-    <form action="/platforms/new" method="POST">
+    <form action="/platforms" method="POST">
       <label for="platform">Platform name:</label>
       <input type="text" name="platform" id="platform" required />
       <button type="submit">Add Platform</button>
