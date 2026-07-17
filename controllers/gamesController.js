@@ -1,61 +1,43 @@
 const gamesDb = require("../db/gamesQueries");
-const genresDb = require("../db/genresQueries");
-const platformsDb = require("../db/platformsQueries");
+const getPageData = require("../helpers/getPageData");
 const { validationResult } = require("express-validator");
 
 async function getGames(req, res, next) {
-  try {
-    const selectedGenreId = req.query.genre;
-    const selectedPlatformId = req.query.platform;
-    let games;
+  const pageData = await getPageData();
+  const selectedGenreId = req.query.genre;
+  const selectedPlatformId = req.query.platform;
+  let games;
 
-    if (selectedGenreId) {
-      games = await gamesDb.getGamesByGenre(selectedGenreId);
-    } else if (selectedPlatformId) {
-      games = await gamesDb.getGamesByPlatform(selectedPlatformId);
-    } else {
-      games = await gamesDb.getAllGames();
-    }
-
-    const [genres, platforms] = await Promise.all([
-      genresDb.getAllGenres(),
-      platformsDb.getAllPlatforms(),
-    ]);
-
-    res.render("index", {
-      gamesList: games,
-      genresList: genres,
-      platformsList: platforms,
-      selectedGenreId: selectedGenreId || null,
-      selectedPlatformId: selectedPlatformId || null,
-    });
-  } catch (err) {
-    next(err);
+  if (selectedGenreId) {
+    games = await gamesDb.getGamesByGenre(selectedGenreId);
+  } else if (selectedPlatformId) {
+    games = await gamesDb.getGamesByPlatform(selectedPlatformId);
+  } else {
+    games = await gamesDb.getAllGames();
   }
+
+  res.render("index", {
+    gamesList: games,
+    ...pageData,
+    selectedGenreId: selectedGenreId || null,
+    selectedPlatformId: selectedPlatformId || null,
+  });
 }
 
 async function getCreateGameForm(req, res) {
-  const [genres, platforms] = await Promise.all([
-    genresDb.getAllGenres(),
-    platformsDb.getAllPlatforms(),
-  ]);
+  const pageData = await getPageData();
   res.render("addGame", {
-    genresList: genres,
-    platformsList: platforms,
+    ...pageData,
     game: { genres: [], platforms: [] },
   });
 }
 
 async function postCreateGameForm(req, res) {
+  const pageData = await getPageData();
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const [genres, platforms] = await Promise.all([
-      genresDb.getAllGenres(),
-      platformsDb.getAllPlatforms(),
-    ]);
     res.render("addGame", {
-      genresList: genres,
-      platformsList: platforms,
+      ...pageData,
       errors: errors.array(),
       game: req.body,
     });
@@ -94,15 +76,13 @@ async function getGameDetails(req, res) {
 
 async function getEditGameForm(req, res) {
   const gameId = req.params.id;
-  const [game, genres, platforms] = await Promise.all([
+  const [game, pageData] = await Promise.all([
     gamesDb.showGameDetails(gameId),
-    genresDb.getAllGenres(),
-    platformsDb.getAllPlatforms(),
+    getPageData(),
   ]);
   res.render("editGame", {
     game: game,
-    genresList: genres,
-    platformsList: platforms,
+    ...pageData,
   });
 }
 
@@ -110,16 +90,14 @@ async function postEditGameForm(req, res) {
   const gameId = req.params.id;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const [game, genres, platforms] = await Promise.all([
+    const [game, pageData] = await Promise.all([
       gamesDb.showGameDetails(gameId),
-      genresDb.getAllGenres(),
-      platformsDb.getAllPlatforms(),
+      getPageData(),
     ]);
     const blendedGameData = { ...game, ...req.body };
     res.render("editGame", {
       game: blendedGameData,
-      genresList: genres,
-      platformsList: platforms,
+      ...pageData,
       errors: errors.array(),
     });
   } else {

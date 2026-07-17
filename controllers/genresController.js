@@ -1,19 +1,19 @@
-const genresDb = require("../db/genresQueries");
+const getPageData = require("../helpers/getPageData");
 const { validationResult } = require("express-validator");
 
 async function getAddGenre(req, res) {
-  const genres = await genresDb.getAllGenres();
-  res.render("addGenre", {
-    genresList: genres,
+  const pageData = await getPageData();
+  res.render("genres", {
+    ...pageData,
   });
 }
 
 async function postAddGenre(req, res) {
+  const pageData = await getPageData();
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const genres = await genresDb.getAllGenres();
-    res.render("addGenre", {
-      genresList: genres,
+    res.render("genres", {
+      ...pageData,
       errors: errors.array(),
     });
   } else {
@@ -23,12 +23,12 @@ async function postAddGenre(req, res) {
 }
 
 async function postDeleteGenre(req, res) {
+  const pageData = await getPageData();
   const genreId = req.params.id;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const genres = await genresDb.getAllGenres();
-    res.render("addGenre", {
-      genresList: genres,
+    res.render("genres", {
+      ...pageData,
       errors: errors.array(),
     });
   } else {

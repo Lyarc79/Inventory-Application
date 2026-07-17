@@ -1,19 +1,19 @@
-const platformsDb = require("../db/platformsQueries");
+const getPageData = require("../helpers/getPageData");
 const { validationResult } = require("express-validator");
 
 async function getAddPlatform(req, res) {
-  const platforms = await platformsDb.getAllPlatforms();
-  res.render("addPlatform", {
-    platformsList: platforms,
+  const pageData = await getPageData();
+  res.render("platforms", {
+    ...pageData,
   });
 }
 
 async function postAddPlatform(req, res) {
+  const pageData = await getPageData();
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const platforms = await platformsDb.getAllPlatforms();
-    res.render("addPlatform", {
-      platformList: platforms,
+    res.render("platforms", {
+      ...pageData,
       errors: errors.array(),
     });
   } else {
@@ -23,12 +23,12 @@ async function postAddPlatform(req, res) {
 }
 
 async function postDeletePlatform(req, res) {
+  const pageData = await getPageData();
   const platformId = req.params.id;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const platforms = await platformsDb.getAllPlatforms();
-    res.render("addPlatform", {
-      platformsList: platforms,
+    res.render("platforms", {
+      ...pageData,
       errors: errors.array(),
     });
   } else {
