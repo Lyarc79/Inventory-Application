@@ -2,7 +2,7 @@ const gamesDb = require("../db/gamesQueries");
 const getPageData = require("../helpers/getPageData");
 const { validationResult } = require("express-validator");
 
-async function getGames(req, res, next) {
+async function getGames(req, res) {
   const pageData = await getPageData();
   const selectedGenreId = req.query.genre;
   const selectedPlatformId = req.query.platform;
