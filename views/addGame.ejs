@@ -7,60 +7,61 @@
     <%- include('partials/errors') %>
     <div class="workspace-wrapper">
        <%- include('partials/sidebar') %>
-      <div class="mainpanel-container">
-        <div class="form-header">
-          <h1>Add New Game</h1>
-           <a href="/games" class="back-btn">Back</a>
-        </div>
-        <div class="form-wrapper">
-          <form action="/games" method="POST" autocomplete="off">
-            <div class="form-group">
-              <label for="title">Title</label>
-              <input type="text" name="title" id="title" value="<%= game.title %>" required/>
-            </div>
-            <div class="form-group">
-              <label for="developer">Developer</label>
-              <input type="text" name="developer_name" id="developer" value="<%= game.developer_name %>" required/>
-            </div>
-            <div class="form-group">
-              <label for="publisher">Publisher</label>
-              <input type="text" name="publisher_name" id="publisher" value="<%= game.publisher_name %>" required/>
-            </div>
-            <div class="form-group">
-              <label for="date">Release Date</label>
-              <input type="date" name="release_date" id="date value="<%= game.release_date ? new Date(game.release_date).toLocaleDateString('sv-SE') : '' %>" required/>
-            </div>
-            <div class="form-group">
-              <label for="price">Price (€)</label>
-              <input type="text" name="price" id="price" value="<%= game.price %>" required/>
-            </div>
-            <div class="form-group">
-              <label for="coverImg">Cover Image URL</label>
-              <input type="text" name="cover_image_url" id="coverImg" value="<%= game.cover_image_url %>" />
-            </div>
+      <div class="main-content">
+        <div class="mainpanel-container">
+          <div class="form-header">
+            <h1>Add New Game</h1>
+             <a href="/games" class="back-btn">Back</a>
+          </div>
+          <div class="form-wrapper">
+            <form action="/games" method="POST" autocomplete="off">
               <div class="form-group">
-                <fieldset>
-                    <legend>Genres</legend>
-                    <div class="checkbox-options-container">
-                      <% genresList.forEach(genre => { %>
-                          <label class="checkbox-item"><input type="checkbox" name="genres" value="<%= genre.id %>"<%= game.genres.includes(genre.name) || game.genres.includes(String(genre.id)) ? 'checked' : '' %>/><%= genre.name %></label>
-                      <% }) %>
-                    </div>
-                </fieldset>
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" value="<%= game.title %>" required/>
               </div>
               <div class="form-group">
-                <fieldset>
-                    <legend>Platforms</legend>
-                    <div class="checkbox-options-container">
-                      <% platformsList.forEach(platform => { %>
-                          <label class="checkbox-item"><input type="checkbox" name="platforms" value="<%= platform.id %>"<%= game.platforms.includes(platform.name) || game.platforms.includes(String(platform.id)) ? 'checked' : '' %>/><%= platform.name %></label>
-                      <% }) %>
-                    </div>
-                </fieldset>
+                <label for="developer">Developer</label>
+                <input type="text" name="developer_name" id="developer" value="<%= game.developer_name %>" required/>
               </div>
-              <button type="submit" class="submit-btn">Add Game</button>
-             
-          </form>
+              <div class="form-group">
+                <label for="publisher">Publisher</label>
+                <input type="text" name="publisher_name" id="publisher" value="<%= game.publisher_name %>" required/>
+              </div>
+              <div class="form-group">
+                <label for="date">Release Date</label>
+                <input type="date" name="release_date" id="date value="<%= game.release_date ? new Date(game.release_date).toLocaleDateString('sv-SE') : '' %>" required/>
+              </div>
+              <div class="form-group">
+                <label for="price">Price (€)</label>
+                <input type="text" name="price" id="price" value="<%= game.price %>" required/>
+              </div>
+              <div class="form-group">
+                <label for="coverImg">Cover Image URL</label>
+                <input type="text" name="cover_image_url" id="coverImg" value="<%= game.cover_image_url %>" />
+              </div>
+                <div class="form-group">
+                  <fieldset>
+                      <legend>Genres</legend>
+                      <div class="checkbox-options-container">
+                        <% genresList.forEach(genre => { %>
+                            <label class="checkbox-item"><input type="checkbox" name="genres" value="<%= genre.id %>"<%= game.genres.includes(genre.name) || game.genres.includes(String(genre.id)) ? 'checked' : '' %>/><%= genre.name %></label>
+                        <% }) %>
+                      </div>
+                  </fieldset>
+                </div>
+                <div class="form-group">
+                  <fieldset>
+                      <legend>Platforms</legend>
+                      <div class="checkbox-options-container">
+                        <% platformsList.forEach(platform => { %>
+                            <label class="checkbox-item"><input type="checkbox" name="platforms" value="<%= platform.id %>"<%= game.platforms.includes(platform.name) || game.platforms.includes(String(platform.id)) ? 'checked' : '' %>/><%= platform.name %></label>
+                        <% }) %>
+                      </div>
+                  </fieldset>
+                </div>
+                <button type="submit" class="submit-btn">Add Game</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

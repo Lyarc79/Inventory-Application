@@ -55,11 +55,11 @@
         const {id, name} = e.target.dataset;
         genreName.textContent = name;
         deleteForm.setAttribute('action', `/genres/${id}/delete` );
-        deleteDialog.showModal();
-        document.getElementById('close-modal-btn').addEventListener('click', () => {
+        deleteDialog.showModal();;
+      }))
+      document.getElementById('close-modal-btn').addEventListener('click', () => {
           deleteDialog.close();
         })
-      }))
     </script>
   </body>
 </html>

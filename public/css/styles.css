@@ -13,7 +13,8 @@
   --font-body: "Inter", sans-serif;
 
   --accent-primary: #5540ff;
-  --accent-hover: #444fe7;
+  --accent-hover: #3b34af;
+  --accent-dark: #211e3b;
   --accent-soft: #f0eeff;
   --acent-border: #d8d3ff;
 
@@ -27,6 +28,7 @@
 }
 
 body {
+  overflow: hidden;
   margin: 0;
   padding: 0;
   font-family: var(--font-body);
@@ -40,6 +42,7 @@ body {
 .workspace-wrapper {
   display: flex;
   flex: 1;
+  overflow: auto;
 }
 
 /* =========================================
@@ -54,6 +57,10 @@ body {
 }
 
 .main-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   font-family: var(--font-title);
   padding: 20px 30px;
   position: sticky;
@@ -68,11 +75,24 @@ body {
   font-weight: bold;
 }
 
+.header-right-links {
+  display: flex;
+  gap: 3rem;
+}
+
+.header-link {
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
 /* =========================================
     SIDEBAR PARTIAL
    ========================================= */
 
 .sidebar {
+  flex-shrink: 0;
+  overflow-y: auto;
   width: 250px;
   padding: 25px 20px;
   display: flex;
@@ -120,6 +140,10 @@ body {
   font-weight: 600;
 }
 
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
 /* =========================================
     MAIN CONTENT
    ========================================= */
@@ -145,7 +169,10 @@ body {
 }
 
 .grid-header a,
-.submit-btn {
+.submit-btn,
+.add-genre-form button,
+.add-platform-form button,
+.modal-actions button[type="submit"] {
   border: none;
   padding: 0.6rem 1.25rem;
   border-radius: 8px;
@@ -160,8 +187,10 @@ body {
 }
 
 .grid-header a:hover,
-.submit-btn:hover {
-  background-color: #3b34af;
+.submit-btn:hover,
+.add-genre-form button:hover,
+.add-platform-form button:hover {
+  background-color: var(--accent-hover);
   transform: translateY(-2px);
   box-shadow: 0 5px 12px rgba(130, 99, 241, 0.3);
 }
@@ -170,6 +199,11 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 2rem;
+}
+
+.games-grid a {
+  text-decoration: none;
+  display: block;
 }
 
 .game-card {
@@ -219,8 +253,7 @@ body {
   padding: 1rem;
 }
 
-.card-content h3,
-.card-content a {
+.card-content h3 {
   font-family: var(--font-title);
   font-weight: 300;
   color: var(--text-primary);
@@ -231,15 +264,28 @@ body {
   text-overflow: ellipsis;
 }
 
-.card-content a:hover {
-  color: var(--accent-hover);
-}
-
 .card-content p {
   font-family: var(--font-title);
   font-weight: 600;
   color: var(--accent-primary);
   font-size: 1rem;
+}
+
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background-color: rgba(117, 104, 233, 0.514);
+  border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-hover);
 }
 
 /* =========================================
@@ -250,7 +296,7 @@ body {
   display: flex;
   flex-direction: column;
   max-width: 650px;
-  margin: 3rem 0 3rem 6rem;
+  margin: 20px 0 20px 80px;
 }
 
 .mainpanel-container h1 {
@@ -343,6 +389,238 @@ body {
   background-color: var(--accent-primary);
   color: #ffffff;
   border-color: var(--accent-primary);
+}
+
+/* =========================================
+    GENRES AND PLATFORMS PAGE
+   ========================================= */
+
+.mainpanel-genrescontainer,
+.mainpanel-platformscontainer {
+  margin: 0 auto;
+  padding: 3rem;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.genres-header,
+.platforms-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4rem;
+  margin-bottom: 4rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-text h1 {
+  font-family: var(--font-title);
+  margin-bottom: 1rem;
+}
+
+.header-text p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.add-genre-form,
+.add-platform-form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.add-genre-form label,
+.add-platform-form label {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.add-genre-form input,
+.add-platform-form input {
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-dark);
+  border-radius: 6px;
+  border: 1px solid #3a3355;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  width: 280px;
+  transition: border-color 0.15s ease;
+}
+
+.add-genre-form input:focus,
+.add-platform-form input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.genres-grid,
+.platforms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+.genre-card,
+.platform-card {
+  min-height: 75px;
+  background-color: var(--accent-soft);
+  border: 1px solid var(--accent-primary);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.genre-card-body,
+.platform-card-body {
+  align-self: center;
+}
+
+.genre-card-header,
+.platform-card-header {
+  margin-bottom: 10px;
+}
+
+.genre-card-body h3 a,
+.platform-card-body h3 a {
+  font-size: 1.15rem;
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.genre-card:hover,
+.platform-card:hover {
+  background-color: var(--accent-primary);
+  transform: translateY(-3px);
+  border-color: var(--accent-soft);
+  box-shadow: 0 4px 10px rgba(124, 58, 237, 0.08);
+}
+
+.genre-card:hover a,
+.platform-card:hover a {
+  color: var(--accent-soft);
+}
+
+.open-delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: none;
+  padding: 0.25rem 0.5rem;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.15s ease;
+}
+
+.open-delete-btn:hover {
+  opacity: 1;
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+#delete-modal {
+  margin: auto;
+  background-color: var(--accent-dark);
+  color: #ffffff;
+  border: 1px solid #3a3355;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+#delete-modal::backdrop {
+  background-color: rgba(20, 15, 42, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+#delete-modal h3 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+#modal-genre-name {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+#delete-modal p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+#delete-modal input[type="password"] {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1.5rem;
+  background-color: var(--bg-dark);
+  border: 1px solid #3a3355;
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+#delete-modal input[type="password"]:focus {
+  outline: none;
+  border-color: #ef4444;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+#close-modal-btn {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid #3a3355;
+  padding: 0.65rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+#close-modal-btn:hover {
+  color: #ffffff;
+  background-color: var(--bg-dark-soft);
+}
+
+#delete-modal button[type="submit"] {
+  background-color: #ef4444;
+}
+
+#delete-modal button[type="submit"]:hover {
+  background-color: #dc2626;
 }
 
 /* =========================================
