@@ -13,6 +13,7 @@
                 </div>
                 <div class="games-grid">
                     <% gamesList.forEach(game => { %>
+                    <a href="/games/<%= game.id %>">
                         <div class="game-card">
                             <div class="card-image">
                                 <% if(game.cover_image_url) { %>
@@ -23,25 +24,15 @@
                             </div>
                             <div class="card-content">
                                 <h3>
-                                    <a href="/games/<%= game.id %>"><%= game.title %></a>
+                                    <%= game.title %>
                                 </h3>
                                 <p><%= game.price %>€</p>
                             </div>
                         </div>
+                    </a>
                     <% }) %>
                 </div>
             </main>
-            <% if (locals.isFiltered) { %>
-                <a href="/">Back to home</a>
-            <% } %>
         </div>
-        <script>
-            const currentUrl = window.location.pathname + window.location.search;
-            document.querySelectorAll('.sidebar a').forEach(link => {
-                if(link.getAttribute('href') === currentUrl){
-                    link.classList.add('active');
-                }
-            })
-        </script>
     </body>
 </html>

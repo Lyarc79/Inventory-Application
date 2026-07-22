@@ -4,7 +4,7 @@
         <ul>
             <% genresList.forEach(genre => { %>
                 <li>
-                    <a href="/genres/<%= genre.id %>"><%= genre.name %></a>
+                    <a href="/games?genre=<%= genre.id %>" class="<%= (currentPath === '/games' && currentQuery.genre == genre.id) ? 'active' : '' %>"><%= genre.name %></a>
                 </li>
             <% }) %>
         </ul>
@@ -14,7 +14,7 @@
         <ul>
             <% platformsList.forEach(platform => { %>
                 <li>
-                    <a href="/platforms/<%= platform.id %>"><%= platform.name %></a>
+                    <a href="/games?platform=<%= platform.id %>" class="<%= (currentPath === '/games' && currentQuery.platform == platform.id) ? 'active' : '' %>"><%= platform.name %></a>
                 </li>
             <% }) %>
         </ul>
@@ -23,8 +23,8 @@
         <h3>Quick Actions</h3>
         <ul>
             <li><a href="/games/new">Add Game</a></li>
-            <li><a href="/genres/new">Add Genre</a></li>
-            <li><a href="/platforms/new">Add Platform</a></li>
+            <li><a href="/genres">Add Genre</a></li>
+            <li><a href="/platforms">Add Platform</a></li>
         </ul>
     </div>
 </aside>

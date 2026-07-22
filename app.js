@@ -10,6 +10,12 @@ const gamesRouter = require("./routes/gamesRouter");
 const genresRouter = require("./routes/genresRouter");
 const platformsRouter = require("./routes/platformsRouter");
 
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path;
+  res.locals.currentQuery = req.query;
+  next();
+});
+
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.set("views", path.join(__dirname, "views"));
