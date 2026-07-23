@@ -23,7 +23,14 @@
           <% platformsList.forEach(platform => { %>
             <div class="platform-card">
               <div class="platform-card-header">
-                 <button type="button" class="open-delete-btn" data-id="<%= platform.id %>" data-name="<%= platform.name %>">Delete</button>
+                 <button 
+                  type="button" 
+                  class="platform-delete-btn open-delete-btn" 
+                  data-name="<%= platform.name %>"
+                  data-type="platform"
+                  data-action="/platform/<%= platform.id %>/delete">
+                  Delete
+                </button>
               </div>
               <div class="platform-card-body">
                 <h3>
@@ -33,33 +40,8 @@
             </div>
           <% }) %>
         </div>
-      
-        <dialog id="delete-modal">
-          <form action="" id="delete-form" method="POST">
-            <h3>Are you sure you want to delete <span id="modal-platform-name"></span> platform ?</h3>
-            <p>Please enter the admin password to confirm:</p>
-            <input type="password" name="adminPassword" id="adminPassword" required placeholder="Admin PIN">
-            <div class="modal-actions">
-              <button type="button" id="close-modal-btn">Cancel</button>
-              <button type="submit">Confirm Delete</button>
-            </div>
-          </form>
-        </dialog>
       </div>
     </div>
-    <script>
-      const deleteDialog = document.getElementById('delete-modal');
-      const deleteForm = document.getElementById('delete-form');
-      const platformName = document.getElementById('modal-platform-name');
-      document.querySelectorAll('.open-delete-btn').forEach((btn) => btn.addEventListener('click', (e) => {
-        const {id, name} = e.target.dataset;
-        platformName.textContent = name;
-        deleteForm.setAttribute('action', `/platforms/${id}/delete` );
-        deleteDialog.showModal();;
-      }))
-      document.getElementById('close-modal-btn').addEventListener('click', () => {
-          deleteDialog.close();
-        })
-    </script>
+    <%- include('partials/deleteModal') %>
   </body>
 </html>

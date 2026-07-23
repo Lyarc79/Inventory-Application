@@ -1,0 +1,22 @@
+<dialog id="delete-modal">
+  <form action="" id="delete-form" method="POST">
+    <h3>
+      Are you sure you want to delete <span id="modal-item-name"></span>
+      <span id="modal-item-type"></span>
+      ?
+    </h3>
+    <p>Please enter the admin password to confirm:</p>
+    <input
+      type="password"
+      name="adminPassword"
+      id="adminPassword"
+      required
+      placeholder="Admin PIN"
+    />
+    <div class="modal-actions">
+      <button type="button" id="close-modal-btn">Cancel</button>
+      <button type="submit">Confirm Delete</button>
+    </div>
+  </form>
+</dialog>
+<script src="/js/deleteModal.js" defer></script>
